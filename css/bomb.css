@@ -1,70 +1,110 @@
 body {
   margin: 0;
-  min-height: 100vh;
+  height: 100vh;
+  box-sizing: border-box;
+  padding-bottom: 110px;          /* room for the fixed controls */
   background: #1b1d21;
   color: #e8e8e8;
   font-family: "Courier New", monospace;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 
-.bomb {
+/* ---------- 3D box ---------- */
+.scene {
+  width: 520px;
+  height: 340px;
+  perspective: 1200px;
+  cursor: grab;
+  touch-action: none;
+  user-select: none;
+}
+.scene.dragging { cursor: grabbing; }
+
+.cube {
+  position: relative;
+  width: 520px;
+  height: 340px;
+  transform-style: preserve-3d;
+}
+.cube.snap { transition: transform 0.6s ease; }
+
+.face {
+  position: absolute;
+  box-sizing: border-box;
   background: #2c2f36;
   border: 3px solid #555;
-  border-radius: 12px;
-  padding: 20px;
-  width: min(640px, 94vw);
-  text-align: center;
+  backface-visibility: hidden;
 }
+/* Box is 520 wide, 340 tall, 70 deep. */
+.front { width: 520px; height: 340px; padding: 14px; border-radius: 8px; transform: translateZ(35px); }
+.back  { width: 520px; height: 340px; padding: 14px; border-radius: 8px; transform: rotateY(180deg) translateZ(35px); }
 
-.bomb.flash { animation: flash 0.4s; }
+/* Sides are a few px bigger than needed so they overlap the edges (no gaps). */
+.side { background: #23252b; border-radius: 0; }
+.right   { width: 78px;  height: 340px; left: 221px; transform: rotateY(90deg)  translateZ(260px); }
+.left    { width: 78px;  height: 340px; left: 221px; transform: rotateY(-90deg) translateZ(260px); }
+.topf    { width: 520px; height: 78px;  top: 131px;  transform: rotateX(90deg)  translateZ(170px); }
+.bottomf { width: 520px; height: 78px;  top: 131px;  transform: rotateX(-90deg) translateZ(170px); }
+
+.label {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: #ddd;
+}
+.label.vertical { writing-mode: vertical-rl; }
+
+.face.flash { animation: flash 0.4s; }
 @keyframes flash { 50% { background: #7a1f1f; } }
 
+/* ---------- Face contents ---------- */
 .top {
   display: flex;
   justify-content: space-between;
   align-items: center;
   background: #000;
-  padding: 10px 16px;
+  padding: 6px 14px;
   border-radius: 8px;
+  margin-bottom: 12px;
 }
-
-.timer { font-size: 3rem; color: #ff3b30; letter-spacing: 4px; }
-.strikes { font-size: 2rem; color: #555; }
+.timer { font-size: 2.6rem; color: #ff3b30; letter-spacing: 4px; }
+.strikes { font-size: 1.8rem; color: #555; }
 .strikes .on { color: #ff3b30; }
 
-.info {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 16px 0;
-  padding: 8px;
-  background: #3a3e47;
-  border-radius: 8px;
-}
-
-.slots {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
+.slots { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.front .slots { height: 215px; }
+.back .slots  { height: 100%; grid-template-rows: 1fr 1fr; }
 
 .slot {
-  min-height: 120px;
   border: 2px dashed #666;
   border-radius: 8px;
-  padding: 10px;
+  padding: 6px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  gap: 8px;
+  gap: 5px;
+  text-align: center;
+  font-size: 0.85rem;
 }
-
+.slot button { padding: 4px 10px; font-size: 0.75rem; }
 .slot.solved { border: 2px solid #34c759; background: #1d3a27; }
 
+/* ---------- Controls (pinned to the bottom) ---------- */
+.controls {
+  position: fixed;
+  left: 0; right: 0; bottom: 0;
+  padding: 12px;
+  text-align: center;
+  background: #1b1d21;
+  z-index: 10;
+}
+.message { min-height: 1.5em; margin: 0 0 10px; }
 button {
   font: inherit;
   padding: 8px 16px;
@@ -73,5 +113,131 @@ button {
   background: #ff9f0a;
   cursor: pointer;
 }
+button.small { background: #555; color: #eee; }
+/* ---------- Bomb face contents ---------- */
+.face.left {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-.message { min-height: 1.5em; }
+.face.left .dvi {
+  --ink: #111;
+  --fill: #23252b;      /* matches .side background */
+  font-size: 5px;      /* port is ~21.8em long = ~240px, ~57px thick */
+  display: flex;
+  align-items: center;
+  flex: none;           /* don't let flex squash it into the 72px width */
+  transform: rotate(90deg);
+}
+
+.dvi .hole {
+  width: 1.4em; height: 1.4em;
+  border: .2em solid var(--ink);
+  border-radius: 50%;
+  box-sizing: border-box;
+}
+
+.dvi .shell {
+  --shape: polygon(0 0, 100% 0, 97% 100%, 3% 100%);
+  position: relative;
+  width: 19em; height: 5.2em;
+  background: var(--ink);
+  clip-path: var(--shape);
+  display: flex; align-items: center; justify-content: space-evenly;
+}
+.dvi .shell::before {
+  content: ""; position: absolute; inset: .2em;
+  background: var(--fill);
+  clip-path: var(--shape);
+}
+.dvi .shell > * { position: relative; }
+
+.dvi .pins {
+  width: 8em; height: 3em;
+  background: radial-gradient(circle, var(--ink) .2em, transparent .25em) 0 0 / 1em 1em;
+}
+.dvi .divider { width: .2em; height: 3.6em; background: var(--ink); }
+.dvi .blade   { width: 2em; height: .2em; background: var(--ink); }
+
+/* ---------- Module LED (top right corner) ---------- */
+.slot { position: relative; }
+.slot-body { display: flex; flex-direction: column; align-items: center; gap: 5px; }
+.led {
+  position: absolute; top: 6px; right: 6px;
+  width: 10px; height: 10px; border-radius: 50%;
+  background: #444; border: 1px solid #000;
+}
+.slot.solved .led { background: #34c759; box-shadow: 0 0 8px #34c759; }
+
+/* ---------- Batteries (right side) ---------- */
+.face.right { display: flex; align-items: center; justify-content: center; }
+.batteries {
+  display: flex; flex-wrap: wrap; justify-content: center; align-content: center;
+  gap: 14px 10px; width: 64px;
+}
+.battery {
+  position: relative; box-sizing: border-box;
+  border: 2px solid #111; border-radius: 4px; background: #c9a227;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: bold; color: #111;
+}
+.battery::before {            /* the little nub on top */
+  content: ""; position: absolute; top: -6px; left: 50%; transform: translateX(-50%);
+  width: 40%; height: 5px; background: #999; border-radius: 2px 2px 0 0;
+}
+.battery.aa { width: 20px; height: 50px; }
+.battery.d  { width: 30px; height: 62px; }
+
+/* ---------- Ports (left side) ---------- */
+.ports { display: flex; flex-direction: column; align-items: center; gap: 6px; width: 100%; }
+.port-cell.tall { width: 100%; height: 118px; display: flex; align-items: center; justify-content: center; }
+.port-chip {
+  width: 60px; height: 38px; box-sizing: border-box;
+  background: #111; border: 2px solid #000; border-radius: 6px;
+  color: #ddd; font-size: 9px; line-height: 1.1; text-align: center;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ---------- Wires module ---------- */
+.wires { display: flex; flex-direction: column; gap: 8px; width: 170px; }
+.wire {
+  height: 14px; border-radius: 7px; cursor: pointer;
+  background: var(--c); box-shadow: 0 0 0 1px rgba(255,255,255,.18);
+}
+.wire:hover { filter: brightness(1.25); }
+.wire.cut {                       /* a cut wire shows two stubs with a gap */
+  background: linear-gradient(90deg, var(--c) 0 32%, transparent 32% 68%, var(--c) 68% 100%);
+  box-shadow: none; cursor: default; filter: none;
+}
+
+/* ---------- Button module ---------- */
+.button-module { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.main-btn {
+  width: 84px; height: 84px; border-radius: 50%;
+  background: var(--c); color: #fff; font-weight: bold; font-size: 0.9rem;
+  border: 4px solid rgba(0,0,0,.4); box-shadow: 0 4px 0 rgba(0,0,0,.5);
+}
+.main-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 rgba(0,0,0,.5); }
+.confirm-btn { background: #fff; color: #111; padding: 4px 14px; font-size: 0.75rem; }
+
+/* ---------- Home link ---------- */
+.home-link { color: #aaa; margin-left: 14px; font-size: 0.85rem; }
+
+/* ---------- Timer module (lamp) ---------- */
+.lamp-module { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.lamp {
+  width: 62px; height: 62px; padding: 0; border-radius: 50%;
+  background: var(--c); border: 4px solid rgba(0,0,0,.45); box-shadow: 0 0 14px var(--c);
+}
+
+/* ---------- Mathematics module ---------- */
+.math-module { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.math-display {
+  font-size: 1.25rem; letter-spacing: 2px; padding: 4px 12px; border-radius: 4px;
+  background: #000; color: #7cfc00;
+}
+.math-module input {
+  width: 90px; font: inherit; text-align: center; padding: 3px; border-radius: 4px;
+  border: 2px solid #666; background: #111; color: #eee;
+}

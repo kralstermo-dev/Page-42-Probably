@@ -3,28 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Page 42, Probably - Bomb</title>
+  <title>Probably Boom - Bomb</title>
   <link rel="stylesheet" href="css/bomb.css">
+  <link rel="stylesheet" href="css/bomb-extras.css">
 </head>
 <body>
-  <main class="bomb" id="bomb">
-    <header class="top">
-      <div class="timer" id="timer">05:00</div>
-      <div class="strikes" id="strikes" aria-label="Strikes"></div>
-    </header>
+  <div class="scene" id="scene">
+    <div class="cube" id="cube">
 
-    <section class="info">
-      <div>Serial: <strong id="serial">------</strong></div>
-      <div>Batteries: <strong id="batteries">0</strong></div>
-      <div>Ports: <strong id="ports">none</strong></div>
-    </section>
+      <!-- FRONT: timer, strikes, 2 modules -->
+      <div class="face front">
+        <header class="top">
+          <div class="timer" id="timer">05:00</div>
+          <div class="strikes" id="strikes"></div>
+        </header>
+        <section class="slots" id="slots-front"></section>
+      </div>
 
-    <section class="slots" id="slots"></section>
+      <!-- BACK: 4 modules -->
+      <div class="face back">
+        <section class="slots" id="slots-back"></section>
+      </div>
 
-    <p class="message" id="message">Press start when your expert is ready.</p>
+      <!-- SIDES: info the defuser has to read out -->
+      <div class="face side right"><div class="batteries" id="batteries"></div></div>
+      <div class="face side left"><div class="ports" id="ports"></div></div>
+      <div class="face side topf"><div class="label">Serial: <strong id="serial">------</strong></div></div>
+      <div class="face side bottomf"><div class="label">Probably Boom</div></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <p class="message" id="message">Look the bomb over first. The clock is frozen until you press Start.</p>
     <button id="startBtn">Start</button>
-  </main>
+    <button id="frontBtn" class="small">Front</button>
+    <button id="backBtn" class="small">Back</button>
+    <a class="home-link" href="index.html">Home</a>
+  </div>
 
+  <script src="js/modules/wires.js"></script>
+  <script src="js/modules/button.js"></script>
+  <script src="js/modules/timer.js"></script>
+  <script src="js/modules/math.js"></script>
   <script src="js/bomb.js"></script>
 </body>
 </html>

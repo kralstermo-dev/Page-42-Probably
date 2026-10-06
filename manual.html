@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Probably Boom - Manual</title>
+  <style>
+    body { margin: 0; background: #e9e6df; color: #222; font-family: Georgia, "Times New Roman", serif; }
+    .nav { position: sticky; top: 0; display: flex; gap: 12px; align-items: center; padding: 8px 16px;
+           background: #222; font-family: "Courier New", monospace; }
+    .nav a, .nav button { color: #eee; background: none; border: 1px solid #666; border-radius: 4px;
+                          padding: 4px 12px; font: inherit; text-decoration: none; cursor: pointer; }
+    #manual { max-width: 780px; margin: 20px auto; padding: 32px 40px; background: #fffdf8;
+              box-shadow: 0 2px 10px rgba(0,0,0,.25); line-height: 1.55; }
+    h1 { border-bottom: 3px solid #222; padding-bottom: 6px; }
+    table { border-collapse: collapse; margin: 12px 0; }
+    th, td { border: 1px solid #555; padding: 4px 12px; text-align: center; }
+    th { background: #eee; }
+    code { background: #eee; padding: 0 4px; border-radius: 3px; }
+    blockquote.page-marker { margin: 28px 0 8px; padding: 6px 0 0; border: 0; border-top: 1px dashed #999;
+                             text-align: center; color: #777; }
+    blockquote.page-marker h6 { margin: 0; font-size: .8rem; letter-spacing: 2px; }
+    @media (max-width: 600px) { #manual { margin: 0; padding: 20px 16px; } }
+    @media print {
+      body { background: #fff; }
+      .nav { display: none; }
+      #manual { margin: 0; padding: 0; box-shadow: none; max-width: none; }
+      blockquote.page-marker { break-after: page; border: 0; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav"><a href="index.html">Home</a><button onclick="window.print()">Print</button></nav>
+  <main id="manual">Loading manual...</main>
+
+  <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script>
+    // Loads manual.md and turns it into a page. Edit manual.md, push, and the site updates.
+    fetch("manual.md")
+      .then((r) => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+      .then((md) => {
+        const el = document.getElementById("manual");
+        el.innerHTML = marked.parse(md);
+        // Style the "PAGE n / 43" lines as page footers (and page breaks when printing)
+        el.querySelectorAll("blockquote").forEach((b) => {
+          if (/^\s*PAGE \d+/i.test(b.textContent)) b.classList.add("page-marker");
+        });
+      })
+      .catch((err) => {
+        document.getElementById("manual").textContent =
+          "Could not load manual.md (" + err.message + "). If you opened this file straight from your computer, " +
+          "use the GitHub Pages link instead, or run a local server.";
+      });
+  </script>
+</body>
+</html>
