@@ -147,6 +147,104 @@ The display shows two pairs of letters with a symbol between them. Each pair of 
 |---|---|---|---|---|
 | Operation | + | − | × | ÷ |
 
-**Example:** the display shows `BD [] IA`. B = 6 and D = 1, so the first number is 61. I = 2 and A = 3, so the second number is 23. The symbol `[]` means +, so the equation is 61 + 23 = 84. The answer is 84.
+**Example:** The display shows `AB {} DE`. This translates to 36 − 14, which equals 22. So the answer is 22.
 
 > ###### PAGE 8 / 43
+
+# Module 6: Hexadecimal
+The display shows a series of two-character codes. Each code is one letter written in hexadecimal. Use the table below to decode each code, then enter the decoded letters in the input box and click Confirm.
+
+| Hexadecimal | Letter | Hexadecimal | Letter |
+| --- | --- | --- | --- |
+| 61 | a | 6e | n |
+| 62 | b | 6f | o |
+| 63 | c | 70 | p |
+| 64 | d | 71 | q |
+| 65 | e | 72 | r |
+| 66 | f | 73 | s |
+| 67 | g | 74 | t |
+| 68 | h | 75 | u |
+| 69 | i | 76 | v |
+| 6a | j | 77 | w |
+| 6b | k | 78 | x |
+| 6c | l | 79 | y |
+| 6d | m | 7a | z |
+
+> ###### PAGE 9 / 43
+
+# Module 7: Resistor
+The module shows a resistor with three colored bands. Use the table below to find the value of each band, reading the bands from first to third.
+
+* The first band is A.
+* The second band is B.
+* The third band is C.
+
+Once you have all three values, calculate (A + B) × C. Enter the result in the answer box and click Confirm.
+
+| First band | Second band | Third band |
+|---|---|---|
+| <span class="band black">0 (black)</span> | <span class="band black">0 (black)</span> | <span class="band black">1 (black)</span> |
+| <span class="band brown">1 (brown)</span> | <span class="band brown">1 (brown)</span> | <span class="band brown">10 (brown)</span> |
+| <span class="band red">2 (red)</span> | <span class="band red">2 (red)</span> | <span class="band red">100 (red)</span> |
+| <span class="band orange">3 (orange)</span> | <span class="band orange">3 (orange)</span> | <span class="band orange">1000 (orange)</span> |
+| <span class="band yellow">4 (yellow)</span> | <span class="band yellow">4 (yellow)</span> | <span class="band yellow">10000 (yellow)</span> |
+| <span class="band green">5 (green)</span> | <span class="band green">5 (green)</span> | <span class="band green">100000 (green)</span> |
+| <span class="band purple">6 (purple)</span> | <span class="band purple">6 (purple)</span> | <span class="band purple">1000000 (purple)</span> |
+| <span class="band pink">7 (pink)</span> | <span class="band pink">7 (pink)</span> | — |
+| <span class="band grey">8 (grey)</span> | <span class="band grey">8 (grey)</span> | — |
+| <span class="band white">9 (white)</span> | <span class="band white">9 (white)</span> | — |
+
+The third band is never pink, grey, or white.
+
+**Example:** The first band is red (2), the second band is pink (7), and the third band is yellow (10000). The equation is (2 + 7) × 10000 = 9 × 10000 = 90000. So the answer is 90000.
+
+> ###### PAGE 10 / 43
+
+# Module 8: Keypad
+The keypad has four buttons, each marked with a symbol. Only one column in the table below contains all four of these symbols. Find that column, then press the symbols in the order they appear in it, from top to bottom.
+
+<div class="keypad">
+
+| Column 1 | Column 2 | Column 3 | Column 4 |
+|---|---|---|---|
+| ☄ | 🜔 | ♂ | ♀ |
+| ☆ | Ϡ | ƛ | © |
+| Ⰾ | ☿ | ∆ | ϗ |
+| Ѡ | ¿ | Ѧ | ∞ |
+| Ѫ | Ϙ | ≠ | Ɔ |
+
+</div>
+
+> ###### PAGE 11 / 43
+
+# Module 9: Direction
+The defuser is shown a compass with a needle. Each click on the compass turns the needle to the next direction (north, east, south, or west). The defuser needs your help to find the direction the needle must point at.
+
+Go down the list and follow the first rule that applies. Tell the defuser which direction to point the needle at. When the needle points the right way, the defuser clicks Confirm.
+
+1. If the bomb has an XLR port, point the needle west.
+2. If the bomb has more than two batteries, point the needle east.
+3. If the second digit of the serial number is odd, point the needle west.
+4. If the needle was pointing north when the bomb started, point it south.
+5. Otherwise, point the needle north.
+
+> ###### PAGE 12 / 43
+
+# Module 10: Colors
+The module shows two colors on two separate displays. Use the table below to turn each color into a number.
+
+| Color | Number |
+|---|---|
+| <span class="band blue">Blue</span> | 3 |
+| <span class="band purple">Purple</span> | 5 |
+| <span class="band white">White</span> | 7 |
+| <span class="band red">Red</span> | 6 |
+| <span class="band pink">Pink</span> | 8 |
+| <span class="band orange">Orange</span> | 2 |
+| <span class="band black">Black</span> | 1 |
+
+1. Find the number for each of the two colors.
+2. Add the two numbers together.
+3. Enter the sum in the text box and click Confirm.
+
+> ###### PAGE 13 / 43

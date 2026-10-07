@@ -2,6 +2,7 @@
 const START_SECONDS = 300;      // 5 minutes
 const MAX_STRIKES = 3;
 const SLOT_COUNT = 6;           // first 2 go on the front, the rest on the back
+const MAX_SAME_MODULE = 2;     // at most this many of the same module type on one bomb
 const SPEED_PER_STRIKE = 0.25;  // each strike makes the timer 25% faster
 const ALL_PORTS = ["DVI", "HDMI", "USB-C", "Parallel", "Audio Jack", "Display Port", "Ethernet", "XLR"];
 const BATTERY_TYPES = ["AA", "D"];
@@ -16,7 +17,9 @@ function makeSerial() {
   const digits = "0123456789";
   let s = "";
   for (let i = 0; i < 5; i++) s += Math.random() < 0.5 ? pick(letters) : pick(digits);
-  return s + pick(digits); // last character is always a digit
+  s += pick(digits);   // last character is always a digit
+  if ((s.match(/\d/g) || []).length < 2) s = s[0] + pick(digits) + s.slice(2);   // always at least two digits
+  return s;
 }
 
 function makePorts() {                       // 0 to 4 different ports
@@ -119,6 +122,7 @@ function snapTo(x, y) {
 // ---------- Slots ----------
 // Each slot has an LED (top right) that turns green when the module is solved.
 function buildSlots() {
+  const used = new Map();           // how many of each module type this bomb already has
   for (let i = 0; i < SLOT_COUNT; i++) {
     bomb.slots.push({ solved: false });
     const div = document.createElement("div");
@@ -132,8 +136,13 @@ function buildSlots() {
         <button data-strike="${i}">Test: strike</button>
       </div>`;
     $(i < 2 ? "slots-front" : "slots-back").appendChild(div);
-    const mounters = [window.mountWires, window.mountButton, window.mountTimerModule, window.mountMath, window.mountMorse].filter(Boolean);   // add new modules to this list
-    if (mounters.length) pick(mounters)(div, i);   // every slot gets a random module, repeats allowed
+    const mounters = [window.mountWires, window.mountButton, window.mountTimerModule, window.mountMath, window.mountMorse, window.mountHex, window.mountResistor, window.mountKeypad, window.mountCompass, window.mountColors].filter(Boolean);   // add new modules to this list
+    const options = mounters.filter((m) => (used.get(m) || 0) < MAX_SAME_MODULE);   // drop types that hit the cap
+    if (options.length) {
+      const chosen = pick(options);                 // random module for this slot
+      used.set(chosen, (used.get(chosen) || 0) + 1);
+      chosen(div, i);
+    }
   }
   cube.addEventListener("click", (e) => {
     if (!bomb.running) return;
@@ -148,7 +157,7 @@ function solveModule(i) {
   bomb.slots[i].solved = true;
   const el = $(`slot-${i}`);
   el.classList.add("solved");                       // this also lights the LED
-  if (!el.querySelector(".wires, .button-module, .gauge-module, .math-module, .morse-module")) el.querySelector(".slot-body").innerHTML = "<span>Module solved</span>";
+  if (!el.querySelector(".wires, .button-module, .gauge-module, .math-module, .morse-module, .hex-module, .resistor-module, .keypad-module, .compass-module, .colors-module")) el.querySelector(".slot-body").innerHTML = "<span>Module solved</span>";
   if (bomb.slots.every((s) => s.solved)) win();
 }
 

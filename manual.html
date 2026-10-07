@@ -20,6 +20,29 @@
     blockquote.page-marker { margin: 28px 0 8px; padding: 6px 0 0; border: 0; border-top: 1px dashed #999;
                              text-align: center; color: #777; }
     blockquote.page-marker h6 { margin: 0; font-size: .8rem; letter-spacing: 2px; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }   /* keep the colors when printing */
+    .band { display: inline-block; min-width: 96px; padding: 2px 10px; border-radius: 4px; border: 1px solid rgba(0,0,0,.35); text-align: center; }
+    .band.black  { background: #111;    color: #fff; }
+    .band.brown  { background: #8b5a2b; color: #fff; }
+    .band.red    { background: #d62828; color: #fff; }
+    .band.orange { background: #f77f00; color: #111; }
+    .band.yellow { background: #fcd34d; color: #111; }
+    .band.green  { background: #2a9d3f; color: #fff; }
+    .band.blue   { background: #2563eb; color: #fff; }
+    .band.purple { background: #7b2cbf; color: #fff; }
+    .band.pink   { background: #f472b6; color: #111; }
+    .band.grey   { background: #9aa5b1; color: #111; }
+    .band.white  { background: #fff;    color: #111; }
+    .keypad td { font-size: 1.6rem; padding: 4px 18px; }
+    .calc { position: fixed; right: 16px; bottom: 16px; width: 230px; padding: 10px; z-index: 20; background: #222;
+            border: 1px solid #666; border-radius: 8px; font-family: "Courier New", monospace; box-shadow: 0 4px 14px rgba(0,0,0,.4); }
+    .calc[hidden] { display: none; }
+    #calcDisplay { width: 100%; box-sizing: border-box; margin-bottom: 8px; padding: 6px; font: inherit; font-size: 1.2rem;
+                   text-align: right; background: #000; color: #7cfc00; border: 1px solid #555; border-radius: 4px; }
+    .calc-keys { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+    .calc-keys button { padding: 8px 0; font: inherit; background: #444; color: #eee; border: 0; border-radius: 4px; cursor: pointer; }
+    .calc-keys button.op { background: #ff9f0a; color: #111; }
+    @media print { .calc { display: none; } }
     @media (max-width: 600px) { #manual { margin: 0; padding: 20px 16px; } }
     @media print {
       body { background: #fff; }
@@ -30,10 +53,16 @@
   </style>
 </head>
 <body>
-  <nav class="nav"><a href="index.html">Home</a><button onclick="window.print()">Print</button></nav>
+  <nav class="nav"><a href="index.html">Home</a><button id="calcToggle">Calculator</button><button onclick="window.print()">Print</button></nav>
   <main id="manual">Loading manual...</main>
 
+  <div id="calc" class="calc" hidden>
+    <input id="calcDisplay" autocomplete="off" placeholder="0">
+    <div class="calc-keys" id="calcKeys"></div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+  <script src="js/calculator.js"></script>
   <script>
     // Loads manual.md and turns it into a page. Edit manual.md, push, and the site updates.
     // It tries a few likely file names in the same folder as this page.
