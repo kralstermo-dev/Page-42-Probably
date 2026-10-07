@@ -1,7 +1,25 @@
 // Button module. The rules below are copied from manual.md (Module 2: Button).
 const BUTTON_DEBUG = false;   // set to true to print the answer in the browser console while testing
 const BUTTON_COLORS = { blue: "#2f6fe4", red: "#e0322b", green: "#2fb34a" };
-const BUTTON_LABELS = ["Press", "Nothing", ""];   // "" = the button has no text
+const BUTTON_LABELS = ["Press", "Nothing", "", "Cheese", "Red", "Boom"];   // "" = no text. Cheese, Red and Boom are decoys
+
+// Pure randomness rarely makes the combos the manual talks about (like a red "Press" button),
+// so most of the time we start from one of these and fill in the rest randomly.
+// A combo listed twice is twice as likely.
+const BUTTON_FEATURED = [
+  { color: "red", label: "Press" }, { color: "red", label: "Press" },
+  { color: "blue" },
+  { label: "Nothing" }, { label: "Nothing" },
+  { label: "" },
+  { color: "green" }
+];
+function makeButton() {
+  const base = Math.random() < 0.6 ? pick(BUTTON_FEATURED) : {};
+  return {
+    color: base.color || pick(Object.keys(BUTTON_COLORS)),
+    label: base.label !== undefined ? base.label : pick(BUTTON_LABELS)
+  };
+}
 
 // Returns how many times the main button must be pressed before clicking Confirm.
 // Rules are checked top to bottom, and the first one that applies wins.
@@ -19,7 +37,7 @@ function buttonAnswer(btn, bomb) {
 }
 
 function mountButton(slotEl, slotIndex) {
-  const btn = { color: pick(Object.keys(BUTTON_COLORS)), label: pick(BUTTON_LABELS) };
+  const btn = makeButton();
   const needed = buttonAnswer(btn, bomb);
   if (BUTTON_DEBUG) console.log("Button:", btn.color, JSON.stringify(btn.label), "-> presses:", needed);
 

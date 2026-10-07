@@ -36,8 +36,15 @@
   <script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
   <script>
     // Loads manual.md and turns it into a page. Edit manual.md, push, and the site updates.
-    fetch("manual.md")
-      .then((r) => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+    // It tries a few likely file names in the same folder as this page.
+    const PATHS = ["manual.md", "Manual.md", "Bomb.md", "manual/manual.md"];
+    async function loadManual() {
+      for (const p of PATHS) {
+        try { const r = await fetch(p); if (r.ok) return await r.text(); } catch (e) { /* try the next name */ }
+      }
+      throw new Error("no manual.md next to manual.html");
+    }
+    loadManual()
       .then((md) => {
         const el = document.getElementById("manual");
         el.innerHTML = marked.parse(md);
@@ -48,8 +55,8 @@
       })
       .catch((err) => {
         document.getElementById("manual").textContent =
-          "Could not load manual.md (" + err.message + "). If you opened this file straight from your computer, " +
-          "use the GitHub Pages link instead, or run a local server.";
+          "Could not find the manual (" + err.message + "). Put your manual in the same folder as manual.html " +
+          "and name it exactly manual.md (lowercase).";
       });
   </script>
 </body>

@@ -75,7 +75,6 @@ function say(text) { $("message").textContent = text; }
 
 // ---------- 3D rotation ----------
 let rotX = -10, rotY = 15;
-let idleSpin = true;             // before the game starts, the bomb turns slowly so every side is shown
 const cube = $("cube");
 const scene = $("scene");
 
@@ -89,9 +88,8 @@ function fitToScreen() {
 
 let dragging = false, lastX = 0, lastY = 0;
 scene.addEventListener("pointerdown", (e) => {
-  if (e.target.closest("button, .wire, input")) return;   // clicks on controls should not spin the bomb
+  if (e.target.closest("button, .wire, input, .seg")) return;   // clicks on controls should not spin the bomb
   dragging = true;
-  idleSpin = false;               // the player took over, so stop the idle spin
   lastX = e.clientX;
   lastY = e.clientY;
   cube.classList.remove("snap");
@@ -111,15 +109,7 @@ function stopDrag() { dragging = false; scene.classList.remove("dragging"); }
 scene.addEventListener("pointerup", stopDrag);
 scene.addEventListener("pointercancel", stopDrag);
 
-function spinLoop() {            // slow idle turn until the player drags, snaps, or starts
-  if (!idleSpin) return;
-  rotY += 0.25;
-  applyRotation();
-  requestAnimationFrame(spinLoop);
-}
-
 function snapTo(x, y) {
-  idleSpin = false;
   cube.classList.add("snap");
   rotX = x;
   rotY = y;
@@ -142,8 +132,8 @@ function buildSlots() {
         <button data-strike="${i}">Test: strike</button>
       </div>`;
     $(i < 2 ? "slots-front" : "slots-back").appendChild(div);
-    const mounters = [window.mountWires, window.mountButton, window.mountTimerModule, window.mountMath];   // slot order: add new modules here
-    if (mounters[i]) mounters[i](div, i);
+    const mounters = [window.mountWires, window.mountButton, window.mountTimerModule, window.mountMath, window.mountMorse].filter(Boolean);   // add new modules to this list
+    if (mounters.length) pick(mounters)(div, i);   // every slot gets a random module, repeats allowed
   }
   cube.addEventListener("click", (e) => {
     if (!bomb.running) return;
@@ -158,7 +148,7 @@ function solveModule(i) {
   bomb.slots[i].solved = true;
   const el = $(`slot-${i}`);
   el.classList.add("solved");                       // this also lights the LED
-  if (!el.querySelector(".wires, .button-module, .lamp-module, .math-module")) el.querySelector(".slot-body").innerHTML = "<span>Module solved</span>";
+  if (!el.querySelector(".wires, .button-module, .gauge-module, .math-module, .morse-module")) el.querySelector(".slot-body").innerHTML = "<span>Module solved</span>";
   if (bomb.slots.every((s) => s.solved)) win();
 }
 
@@ -190,8 +180,8 @@ function tick() {
 }
 
 function start() {
-  idleSpin = false;
   bomb.running = true;
+  document.body.classList.remove("pre-start");   // reveal the bomb
   say("Defuse it!");
   $("startBtn").style.display = "none";
   scheduleTick();
@@ -214,7 +204,6 @@ renderStrikes();
 buildSlots();
 applyRotation();
 fitToScreen();
-spinLoop();
 window.addEventListener("resize", fitToScreen);
 $("startBtn").onclick = start;
 $("frontBtn").onclick = () => snapTo(0, 0);

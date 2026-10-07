@@ -68,7 +68,7 @@ Wires is one of the simplest modules to disarm. Go down the list and follow the 
 > ###### PAGE 4 / 43
 
 # Module 2: Button
-The button is also very simple. Press the main button the number of times the rules say, then click the white Confirm button. The main button comes in blue, red, and green.
+The button is also very simple. Press the main button the number of times the rules say, then click the white Confirm button. The main button comes in blue, red, and green, and it may show a word or no text at all.
 
 Go down the list and follow the first rule that applies.
 
@@ -84,42 +84,48 @@ Go down the list and follow the first rule that applies.
 > ###### PAGE 5 / 43
 
 # Module 3: Timer
-This module is solved by reading the bomb's timer. Match the time on the timer to a color, then set the module to that color.
+This module is solved by reading the bomb's timer. Match the time on the timer to a color, then point the gauge at that color.
+
+The gauge has five colored sections, from green on the left to red on the right.
 
 1. Read the time shown on the bomb's timer.
 2. Find that time in the table below to get the color.
-3. Click the lamp to cycle through its colors until it shows that color.
+3. Click that color on the gauge to point the needle at it.
 4. Click Confirm.
 
 The timer keeps running while you work. The time that counts is the time shown when you click Confirm.
 
 | Time | Color |
 | --- | --- |
-| 5:00 - 4:01 | Green (#00FF00) |
-| 4:00 - 3:01 | Light green (#80FF00) |
-| 3:00 - 2:01 | Yellow (#FFFF00) |
-| 2:00 - 1:01 | Orange (#FF8000) |
-| 1:00 - 0:01 | Red (#FF0000) |
+| 5:00 - 4:01 | Green |
+| 4:00 - 3:01 | Light green |
+| 3:00 - 2:01 | Yellow |
+| 2:00 - 1:01 | Orange |
+| 1:00 - 0:01 | Red |
 
 > ###### PAGE 6 / 43
 
 # Module 4: Morse Code
 Translate the code shown on the display and enter it in the input box.
 
-* The display shows a four-digit code in Morse code.
-* Each digit is made of five symbols: dots (•) and dashes (–).
-* Digits are separated by a slash (/).
-* When the code ends, the symbol ↻ is shown and the code starts again from the beginning.
+* The display shows a four-letter code in Morse code, one letter at a time.
+* Each letter is shown for a short time, then the next letter appears.
+* After the fourth letter, the symbol ↻ is shown, and then the code starts again from the first letter.
+* Dots (•) are short and dashes (–) are long.
 
-Use the table below to translate each digit. Enter all four digits, then click Confirm.
+Use the table below to translate each letter. Enter all four letters, then click Confirm.
 
-| Digit | Morse | Digit | Morse |
-| --- | --- | --- | --- |
-| 0 | – – – – – | 5 | • • • • • |
-| 1 | • – – – – | 6 | – • • • • |
-| 2 | • • – – – | 7 | – – • • • |
-| 3 | • • • – – | 8 | – – – • • |
-| 4 | • • • • – | 9 | – – – – • |
+| Letter | Morse | Letter | Morse | Letter | Morse |
+| --- | --- | --- | --- | --- | --- |
+| A | • – | J | • – – – | S | • • • |
+| B | – • • • | K | – • – | T | – |
+| C | – • – • | L | • – • • | U | • • – |
+| D | – • • | M | – – | V | • • • – |
+| E | • | N | – • | W | • – – |
+| F | • • – • | O | – – – | X | – • • – |
+| G | – – • | P | • – – • | Y | – • – – |
+| H | • • • • | Q | – – • – | Z | – – • • |
+| I | • • | R | • – • |  |  |
 
 > ###### PAGE 7 / 43
 

@@ -7,7 +7,9 @@
   <link rel="stylesheet" href="css/bomb.css">
   <link rel="stylesheet" href="css/bomb-extras.css">
 </head>
-<body>
+<body class="pre-start">
+  <div class="ready"><strong>The bomb is sealed.</strong>Get your expert ready with the manual. Nobody sees the bomb until you press Start.</div>
+
   <div class="scene" id="scene">
     <div class="cube" id="cube">
 
@@ -34,7 +36,7 @@
   </div>
 
   <div class="controls">
-    <p class="message" id="message">Look the bomb over first. The clock is frozen until you press Start.</p>
+    <p class="message" id="message">Press Start when your expert is ready. The bomb appears and the clock starts right away.</p>
     <button id="startBtn">Start</button>
     <button id="frontBtn" class="small">Front</button>
     <button id="backBtn" class="small">Back</button>
@@ -45,6 +47,7 @@
   <script src="js/modules/button.js"></script>
   <script src="js/modules/timer.js"></script>
   <script src="js/modules/math.js"></script>
+  <script src="js/modules/morse.js"></script>
   <script src="js/bomb.js"></script>
 </body>
 </html>
